@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+
+{% block head %}
+<title>Edit Profile</title>
+{% endblock head %}
+
+{% block main_content %}
+<h2>Edit Profile: {{ profile.profile_name }}</h2>
+
+<form action="{{ url_for('edit_profile', profile_id=profile.id) }}" method="post">
+    Profile Name: <input type="text" name="profile_name" value="{{ profile.profile_name }}"><br>
+    Program No.: <input type="number" name="program_no" value="{{ profile.program_no }}"><br>
+    Program ID: <input type="text" name="program_id" value="{{ profile.program_id }}"><br>
+    <!-- Add other fields as necessary -->
+
+    <h3>Steps:</h3>
+    {% for step in steps %}
+    <div>
+        Step Process: {{ step.step_process }}<br>
+        Current: {{ step.current }}<br>
+        Time: {{ step.time }}<br>
+        AH/Step: {{ step.ah_step }}<br>
+        Cumulative AH: {{ step.cumulative_ah }}<br>
+        <!-- You can add editing capabilities for steps here as well -->
+    </div>
+    <hr>
+    {% endfor %}
+
+    <input type="submit" value="Update">
+</form>
+
+{% endblock main_content %}

@@ -9,16 +9,17 @@
     {% endblock head %}
 </head>
 <body>
-    <head>
-
-    </head>
+    <header>
+        <h2>MOTOLITE</h2>
+    </header>
     <main>
         {% block main_content %}
         
         {% endblock main_content %}
     </main>
     <footer>
-
+        App in development phase
     </footer>
+    <script src="{{ url_for('static', filename='js/scripts.js') }}"></script>
 </body>
 </html>

@@ -1,0 +1,83 @@
+main {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    flex: 1;
+    padding: 16px;
+}
+
+/* This will target all table headers and align their text to the left */
+th {
+    text-align: left;
+}
+
+/* Apply rounded rectangle outer border to the entire table */
+table.index {
+    border-collapse: separate;  /* This is important for spacing between rows */
+    border-spacing: 0;          /* Remove default spacing */
+    border: 2px solid #333;     /* Change color as desired */
+    border-radius: 10px;        /* Rounded corners */
+    width: 100%;                /* Optional, to take full width */
+    overflow: hidden;           /* To ensure border radius works on child elements */
+}
+
+/* Add borders for the rows */
+table.index tbody tr {
+    border-bottom: 1px solid #ccc;  /* Change color as desired */
+    padding-top: 4px;
+    padding-bottom: 4px;
+}
+
+/* Alternate row colors */
+table.index tbody tr:nth-child(odd) {
+    background-color: #f7f7f7;  /* Light gray, looks good on white */
+}
+
+table.index tbody tr:nth-child(even) {
+    background-color: #e0e0e0;  /* Slightly darker gray */
+}
+
+table.index th, 
+table.index td {
+    padding: 8px;     
+}
+
+/* Basic reset to remove margin and padding */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Make the body a flex container and set it to full viewport height */
+body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    font-family: Arial, sans-serif;  /* Adjust as needed */
+}
+
+/* Style the header and footer */
+header, footer {
+    background-color: red;
+    color: white;
+    padding: 8px 16px;  /* Adjust as needed */
+    text-align: center;
+}
+
+.btn-style {
+    padding: 4px; /* Adjust as needed */
+    font-size: 12px; /* Adjust as needed */
+    cursor: pointer;
+    border: 1px solid #aaa;
+    border-radius: 4px;
+    transition: background-color 0.3s, color 0.3s; /* Smooth transition for hover */
+    height: 24px;
+    width: 96px;
+}
+
+.btn-style:hover {
+    background-color: #3498db; /* Change to your desired hover color */
+    color: white;
+}

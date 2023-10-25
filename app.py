@@ -1,4 +1,4 @@
-from flask import Flask, render_template, url_for
+from flask import Flask, render_template, url_for, request, redirect
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
 
@@ -40,10 +40,72 @@ class Step(db.Model):
     # Relationship to reference the associated Profile object from a Step object
     profile = db.relationship('Profile', back_populates='steps')
 
+@app.route('/edit/<int:profile_id>', methods=['GET', 'POST'])
+def edit_profile(profile_id):
+    # Get the profile by ID
+    profile = Profile.query.get_or_404(profile_id)
+
+    # If it's a POST request, that means the form has been submitted and we need to update our data
+    if request.method == 'POST':
+        # Update profile details (add more as needed)
+        profile.profile_name = request.form.get('profile_name')
+        profile.program_no = request.form.get('program_no')
+        profile.program_id = request.form.get('program_id')
+        # ... (include other fields if they are to be edited)
+
+        # Commit changes
+        db.session.commit()
+
+        # Redirect back to home after editing
+        return redirect(url_for('home'))
+
+    # If it's a GET request, we just render the edit page
+    steps = profile.steps.all()
+    return render_template('edit.html', profile=profile, steps=steps)
+
+@app.route('/delete/<int:profile_id>', methods=['GET'])
+def delete_profile(profile_id):
+    profile = Profile.query.get_or_404(profile_id)
+    db.session.delete(profile)
+    db.session.commit()
+    return redirect(url_for('home'))
+
 @app.route('/', methods=['POST','GET'])
 def home():
+    profiles = Profile.query.all()
     current_date = datetime.today().strftime('%Y-%m-%d')
-    return render_template("index.html", current_date=current_date)
+    error_message = None  # Initialize an error message to None
+    
+    if request.method == 'POST':
+        profile_name = request.form.get('profile_name')
+        program_no = request.form.get('program_no')
+        program_id = request.form.get('program_id')
+
+        # Check for duplicate profile_name
+        existing_profile = Profile.query.filter_by(profile_name=profile_name).first()
+        if existing_profile:
+            error_message = "A profile with that name already exists. Please use a different name."
+
+        else:
+            # Assuming the program_no should be an integer
+            # Convert it to int, but provide a default value of None if conversion fails
+            try:
+                program_no = int(program_no)
+            except (TypeError, ValueError):
+                program_no = None
+
+            new_profile = Profile(
+                profile_name=profile_name,
+                program_no=program_no,
+                program_id=program_id,
+                issue_date=datetime.today()  # Setting the current date for issue_date
+            )
+            
+            db.session.add(new_profile)
+            db.session.commit()
+            return redirect(url_for('home'))  # Redirect to homepage after adding the new profile
+
+    return render_template("index.html", current_date=current_date, profiles=profiles, error=error_message)
 
 if __name__ == "__main__":
     with app.app_context():
