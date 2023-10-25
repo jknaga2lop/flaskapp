@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+
+{% block head %}
+<title>Index</title>
+{% endblock head %}
+
+{% block main_content %}
+<table>
+    <tr>
+        <th>Profile Name</th>
+        <th>Program No.</th>
+        <th>Program ID</th>
+        <th>Issue Date</th>
+        <th>Actions</th>
+    </tr>
+    <!-- Loop all the data from Profile here later -->
+    <tr>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td>
+            <button onclick="location.href='your_delete_url_here';">Delete</button>
+            <br>
+            <button onclick="location.href='your_update_url_here';">Update</button>
+        </td>
+    </tr>
+    <!-- final row -->
+    <form action="/add-profile" method="post">
+        <tr>
+            <td><input type="text" name="profile_name" required placeholder="Enter Profile Name"></td>
+            <td><input type="number" name="program_no" placeholder="Enter Program No."></td>
+            <td><input type="text" name="program_id" placeholder="Enter Program ID"></td>
+            <td>{{ current_date }}</td> <!-- Issue Date will be left empty -->
+            <td><input type="submit" value="Add New Profile"></td>
+        </tr>
+    </form>
+</table>
+
+{% endblock main_content %}
