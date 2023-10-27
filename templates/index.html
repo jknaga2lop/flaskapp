@@ -31,7 +31,7 @@
             <td>
                 <button class = "btn-style" onclick="location.href='edit/{{profile.id}}';">Edit</button>
                 <br>
-                <button class = "btn-style" onclick="confirmDelete('{{ profile.profile_name }}', '{{ profile.id }}')">Delete</button>
+                <button class = "btn-style" onclick="confirmDeleteProfile('{{ profile.profile_name }}', '{{ profile.id }}')">Delete</button>
             </td>
         </tr>
         {% endfor %}

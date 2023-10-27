@@ -5,28 +5,79 @@
 {% endblock head %}
 
 {% block main_content %}
-<h2>Edit Profile: {{ profile.profile_name }}</h2>
+<div style="display: flex; align-items: center;">
+    <label for="profileSelector">
+        <h2 style="margin-right: 10px;">Edit Profile: {{ profile.profile_name }}</h2>
+    </label>
 
-<form action="{{ url_for('edit_profile', profile_id=profile.id) }}" method="post">
+    <!-- Dropdown to select a profile -->
+    <select id="profileSelector" onchange="navigateToSelectedProfile()">
+        {% for p in all_profiles %}
+        <option value="{{ p.id }}" {% if p.id == profile.id %}selected{% endif %}>{{ p.profile_name }}</option>
+        {% endfor %}
+    </select>
+</div>
+
+<form action="{{ url_for('save_profile', profile_id=profile.id) }}" method="post">
+    <input type="submit" value="Save">
     Profile Name: <input type="text" name="profile_name" value="{{ profile.profile_name }}"><br>
     Program No.: <input type="number" name="program_no" value="{{ profile.program_no }}"><br>
     Program ID: <input type="text" name="program_id" value="{{ profile.program_id }}"><br>
     <!-- Add other fields as necessary -->
 
-    <h3>Steps:</h3>
-    {% for step in steps %}
-    <div>
-        Step Process: {{ step.step_process }}<br>
-        Current: {{ step.current }}<br>
-        Time: {{ step.time }}<br>
-        AH/Step: {{ step.ah_step }}<br>
-        Cumulative AH: {{ step.cumulative_ah }}<br>
-        <!-- You can add editing capabilities for steps here as well -->
-    </div>
+    <table class="index">
+        <tr>
+            <td>Step Number</td>
+            <td>Process</td>
+            <td>Current</td>
+            <td>Time</td>
+            <td>AH/Step</td>
+            <td>Cummulative AH</td>
+            <td>Actions</td>
+        </tr>
+        {% for step in steps %}
+        <tr>
+            <td>{{ step.step_number }}</td>
+            <td>
+                <select name="step_process_{{ step.id }}">
+                    <option value="CHA" {% if step.step_process == "CHA" %}selected{% endif %}>CHA</option>
+                    <option value="PAU" {% if step.step_process == "PAU" %}selected{% endif %}>PAU</option>
+                    <option value="DSCH" {% if step.step_process == "DSCH" %}selected{% endif %}>DSCH</option>
+                </select>
+            </td>
+            <td><input type="text" name="current_{{ step.id }}" value="{{ step.current }}"></td>
+            <td><input type="text" name="time_{{ step.id }}" value="{{ step.time|format_time }}"></td>
+            <td>{{ step.ah_step|round(2) }}</td>
+            <td>{{ step.cumulative_ah|round(2) }}</td>
+            <td>
+                <button class="btn-style">Insert</button>
+                <br>
+                <button class="btn-style">Delete</button>
+            </td>
+        </tr>
+        {% endfor %}
+</form>
+        <!-- final row -->
+<form action="{{ url_for('add_step', profile_id=profile.id) }}" method="post">
+        <tr>
+            <td>{{ steps|length }}</td>
+            <td>
+                <select name="new_step_process">
+                    <option value="CHA">CHA</option>
+                    <option value="PAU">PAU</option>
+                    <option value="DSCH">DSCH</option>
+                </select>
+            </td>
+            <td><input type="text" name="new_current"></td>
+            <td><input type="text" name="new_time" placeholder="HH:MM"></td>
+            <td></td>
+            <td></td>
+            <td>
+                <button class="btn-style" type="submit">Add</button>
+            </td>
+        </tr>
+    </table>
     <hr>
-    {% endfor %}
-
-    <input type="submit" value="Update">
 </form>
 
 {% endblock main_content %}
