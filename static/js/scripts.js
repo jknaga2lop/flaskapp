@@ -9,3 +9,10 @@ function navigateToSelectedProfile() {
     const profileId = document.getElementById('profileSelector').value;
     window.location.href = '/edit/' + profileId;
 }
+
+function checkProcessAndSetCurrent(selectElement, currentInputName) {
+    var currentInput = document.getElementsByName(currentInputName)[0];
+    if (selectElement.value === "PAU") {
+        currentInput.value = "0";
+    }
+}
